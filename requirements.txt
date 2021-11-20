@@ -1,0 +1,8 @@
+pandas
+numpy
+sklearn
+pyquery
+swifter
+python-whois
+waybackpy
+shodan
