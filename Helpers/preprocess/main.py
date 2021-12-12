@@ -6,6 +6,7 @@ from Helpers.Constants import *
 from Helpers.preprocess.host_based_features import get_host_based_features
 from Helpers.preprocess.content_based_features import get_content_based_features
 from Helpers.preprocess.lexical_url_features import get_lexical_url_features
+from sklearn.preprocessing import StandardScaler
 import os
 
 
@@ -28,5 +29,17 @@ def preprocess(data_path="Data/malicious_phish.csv", features_extractors=(get_le
     return df
 
 
-def scale_data():
-    pass
+def scale_data(df: pd.DataFrame, test_size=0.2,scaler=StandardScaler()) -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray):
+    """
+
+    :param scaler: scaler object with fit and transform methods
+    :param df: numeric data after preprocess
+    :param test_size: train_test_split param
+    :return: x_train,x_test,y_train,y_test
+    """
+    df = df.select_dtypes(include='number').dropna()
+    x, y = df.drop([label_name], axis=1).values, df[label_name].values
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=42)
+    x_train = scaler.fit_transform(x_train)
+    x_test = scaler.transform(x_test)
+    return x_train, x_test, y_train, y_test

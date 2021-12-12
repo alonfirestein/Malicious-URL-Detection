@@ -8,19 +8,19 @@ from abc import ABC
 import seaborn as sns
 from contextlib import redirect_stdout
 from sklearn.model_selection import KFold
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 from Helpers.Constants import *
 from pathlib import Path
 import pandas as pd
 
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
 
 
-
 class Model(ABC):
-    def train(self, x_train, y_train, **kwargs):
+    """
+    abstract model wrapper for save the report output and implement common behavior easily
+    """
+    def fit(self, x_train, y_train, **kwargs):
         """
         don't forget to remove the labels
         :param x_train: df | numpy | tensor with the features
@@ -60,10 +60,8 @@ class Model(ABC):
             json.dump(kwargs, file, indent=4, sort_keys=True)
         with open(os.path.join(dir_name, "model_output.txt"), 'w') as f:
             with redirect_stdout(f):
-                self.train(x_train, y_train, **kwargs)
+                self.fit(x_train, y_train, **kwargs)
                 prediction = self.predict(x_test)
-                enc = LabelEncoder()
-                np.savetxt(os.path.join(dir_name, 'predictions.txt'), enc.fit_transform(prediction), fmt='%2d')
         class_report = classification_report(y_test, prediction)
         print(class_report)
         with open(os.path.join(dir_name, "classification_report.txt"), "w") as file:
@@ -72,12 +70,11 @@ class Model(ABC):
         plt.figure(figsize=(10, 7))
         sns.heatmap(mat, annot=True)
         plt.savefig(os.path.join(dir_name, "confusion_matrix.png"))
-        plt.draw()
+        plt.clf()
         loss_values = self.get_loss()
         if loss_values is not None:
             plt.plot(loss_values)
             plt.title("Loss Over Epochs")
-            plt.draw()
             plt.savefig(os.path.join(dir_name, "loss.png"))
         if do_cross_validation:
             with open(os.path.join(dir_name, f"classification_report_cross_validation.txt"), "w") as file:
@@ -114,5 +111,3 @@ class Model(ABC):
             new_pred[pred > thr] = 1
             new_pred[pred <= thr] = 0
             print(classification_report(y_test, new_pred))
-
-
