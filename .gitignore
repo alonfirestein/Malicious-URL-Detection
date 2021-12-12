@@ -1,2 +1,5 @@
 .ipynb_checkpoints/
 Data/
+.idea/
+cleaned.csv
+__pycache__/
