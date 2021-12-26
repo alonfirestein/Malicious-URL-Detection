@@ -4,3 +4,4 @@ Data/
 cleaned.csv
 __pycache__/
 */Reports/*
+*.csv

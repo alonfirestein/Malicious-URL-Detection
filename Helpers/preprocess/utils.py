@@ -63,3 +63,9 @@ def number_of_included_elements(pq):
     toi = pq('script') + pq('iframe') + pq('frame') + pq('embed') + pq('form') + pq('object')
     toi = [tag.attr('src') for tag in toi.items()]
     return len([i for i in toi if i])
+
+
+def unshorten_url(url):
+    session = requests.Session()  # so connections are recycled
+    resp = session.head(url, allow_redirects=True)
+    return resp.url
