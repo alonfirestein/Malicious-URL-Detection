@@ -8,7 +8,7 @@ pip install -r requirements.txt
 
 **Data**:
 
-Download from [here](https://www.kaggle.com/sid321axn/malicious-urls-dataset) and [here](https://www.kaggle.com/antonyj453/urldataset) and put under `Data/` folder the csv file
+Download from [here](https://www.unb.ca/cic/datasets/url-2016.html)
 
 
 
