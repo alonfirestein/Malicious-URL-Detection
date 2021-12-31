@@ -5,3 +5,6 @@ cleaned.csv
 __pycache__/
 */Reports/*
 *.csv
+lstm_char_embedding/
+mlp_model/
+*.pb
