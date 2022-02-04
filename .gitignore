@@ -8,3 +8,6 @@ __pycache__/
 lstm_char_embedding/
 mlp_model/
 *.pb
+*.zip
+*.png
+*.xlsx
